@@ -731,6 +731,13 @@
                 <h1>Planning Poker</h1>
                 <p>Collaborative Team Estimation</p>
             </div>
+
+            <div id="roomInviteNotice" class="hidden" style="background: #DBEAFE; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #2563EB;">
+                <p style="font-size: 0.875rem; color: #1E40AF; margin: 0;">
+                    <strong>Room Invitation</strong><br>
+                    You've been invited to join room: <strong id="inviteRoomCode"></strong>
+                </p>
+            </div>
             
             <div class="form-group">
                 <label class="form-label" for="userName">Your Name</label>
@@ -882,8 +889,20 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     const roomCode = urlParams.get('room');
                     if (roomCode) {
+                        // Show invite notice
+                        const inviteNotice = document.getElementById('roomInviteNotice');
+                        const inviteRoomCode = document.getElementById('inviteRoomCode');
+                        inviteNotice.classList.remove('hidden');
+                        inviteRoomCode.textContent = roomCode;
+                        
+                        // Pre-fill room code
                         document.getElementById('roomCode').value = roomCode;
-                        document.getElementById('showJoinBtn').click();
+                        
+                        // Auto-click "Join Room" to show the room code field
+                        setTimeout(() => {
+                            document.getElementById('showJoinBtn').click();
+                            document.getElementById('userName').focus();
+                        }, 100);
                     }
                 });
             }).catch(error => {
