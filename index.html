@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Planning ⚡ Story Points</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Planning Poker - Team Estimation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,49 +13,35 @@
         }
 
         :root {
-            --primary: #FF6B35;
-            --secondary: #F7931E;
-            --accent: #FFC914;
-            --purple: #9B59B6;
-            --blue: #3498DB;
-            --green: #2ECC71;
-            --dark: #1A1A2E;
-            --darker: #0F0F1E;
-            --light: #FFFFFF;
-            --gray: #95A5A6;
-            --surface: #16213E;
-            --surface-light: #1F2D50;
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --primary-light: #DBEAFE;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
-            color: var(--light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(52, 152, 219, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
         }
 
         /* Join Screen */
@@ -65,408 +51,370 @@
             justify-content: center;
             min-height: 100vh;
             padding: 2rem;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
         }
 
-        .join-box {
-            background: var(--surface);
-            border-radius: 24px;
+        .join-container {
+            background: var(--white);
+            border-radius: 16px;
             padding: 3rem;
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--surface-light);
-            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo {
+        .brand {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
-        .logo h1 {
-            font-size: 3rem;
+        .brand-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), #7C3AED);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+        }
+
+        .brand h1 {
+            font-size: 1.75rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--gray-900);
             margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
         }
 
-        .logo p {
-            color: var(--gray);
-            font-size: 1rem;
-            font-family: 'Space Mono', monospace;
+        .brand p {
+            color: var(--gray-500);
+            font-size: 0.95rem;
         }
 
-        .input-group {
+        .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .input-group label {
+        .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--accent);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
         }
 
-        .input-group input {
+        .form-input {
             width: 100%;
-            padding: 1rem 1.25rem;
-            border-radius: 12px;
-            border: 2px solid var(--surface-light);
-            background: var(--darker);
-            color: var(--light);
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray-300);
+            background: var(--white);
+            color: var(--gray-900);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
         }
 
-        .input-group input:focus {
+        .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         .button-group {
-            display: flex;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
             margin-top: 2rem;
         }
 
+        .button-group.full {
+            grid-template-columns: 1fr;
+        }
+
         .btn {
-            flex: 1;
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             border: none;
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--light);
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(255, 107, 53, 0.4);
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-secondary {
-            background: var(--surface-light);
-            color: var(--light);
-            border: 2px solid var(--surface-light);
+            background: var(--white);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
         }
 
         .btn-secondary:hover {
-            background: var(--surface);
-            border-color: var(--primary);
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Game Screen */
         .game-screen {
             display: none;
+            min-height: 100vh;
         }
 
-        .header {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
+        .navbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 2px solid var(--surface-light);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .header-left h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.25rem;
-        }
-
-        .room-code {
-            font-family: 'Space Mono', monospace;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .room-code strong {
-            color: var(--accent);
-            background: var(--darker);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            margin-left: 0.5rem;
-        }
-
-        .header-right {
+        .navbar-brand {
             display: flex;
-            gap: 1rem;
             align-items: center;
+            gap: 0.75rem;
         }
 
-        .user-badge {
-            background: var(--darker);
-            padding: 0.75rem 1.25rem;
-            border-radius: 12px;
+        .navbar-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #7C3AED);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.25rem;
+        }
+
+        .navbar-title {
+            font-size: 1.25rem;
             font-weight: 600;
-            border: 2px solid var(--surface-light);
+            color: var(--gray-900);
         }
 
-        .user-badge span {
-            color: var(--accent);
-            margin-right: 0.5rem;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 2rem;
-        }
-
-        /* Voting Area */
-        .voting-area {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid var(--surface-light);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .voting-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .voting-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent);
-        }
-
-        .voting-status {
-            font-family: 'Space Mono', monospace;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .cards-container {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            width: 80px;
-            height: 110px;
-            background: linear-gradient(135deg, var(--surface-light), var(--surface));
-            border-radius: 12px;
+        .navbar-info {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 3px solid var(--surface-light);
-            position: relative;
-            overflow: hidden;
+            gap: 1rem;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2));
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .share-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--gray-100);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
-        .card:hover {
-            transform: translateY(-8px) rotate(2deg);
-            border-color: var(--primary);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card.selected {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: var(--accent);
-            transform: translateY(-8px) scale(1.1);
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
-        }
-
-        .card.selected::before {
-            opacity: 0;
-        }
-
-        /* Participants Sidebar */
-        .participants-panel {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 1.5rem;
-            border: 2px solid var(--surface-light);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-        }
-
-        .participants-panel h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
+        .share-link-container {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .participant-count {
-            background: var(--darker);
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-family: 'Space Mono', monospace;
+        .share-link-text {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-family: monospace;
         }
 
-        .participant-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+        .copy-btn {
+            padding: 0.375rem 0.75rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .participant {
-            background: var(--darker);
-            padding: 1rem;
-            border-radius: 12px;
-            border: 2px solid var(--surface-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.4s ease;
+        .copy-btn:hover {
+            background: var(--primary-hover);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .copy-btn.copied {
+            background: var(--success);
         }
 
-        .participant-info {
+        .user-info {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
+            background: var(--gray-100);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
-        .participant-avatar {
-            width: 40px;
-            height: 40px;
+        .user-avatar {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--purple), var(--blue));
+            background: var(--primary);
+            color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .participant.host .participant-avatar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-
-        .participant-name {
             font-weight: 600;
+            font-size: 0.875rem;
         }
 
-        .host-badge {
-            background: var(--accent);
-            color: var(--dark);
-            padding: 0.15rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-left: 0.5rem;
+        .user-name {
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
+        }
+
+        /* Voting Panel */
+        .voting-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .panel-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-subtitle {
+            color: var(--gray-500);
+            font-size: 0.875rem;
         }
 
         .vote-status {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: 8px;
         }
 
-        .vote-status.voted {
-            color: var(--green);
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-400);
         }
 
-        .vote-status.pending {
-            color: var(--gray);
+        .status-indicator.active {
+            background: var(--success);
         }
 
-        .vote-status.revealed {
-            color: var(--accent);
-            font-size: 1.8rem;
+        .vote-status-text {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            aspect-ratio: 2/3;
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--gray-700);
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Results */
         .results-section {
-            background: var(--darker);
-            border-radius: 16px;
-            padding: 1.5rem;
             margin-top: 2rem;
-            border: 2px solid var(--surface-light);
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
         }
 
         .results-header {
@@ -474,65 +422,63 @@
             margin-bottom: 1.5rem;
         }
 
-        .results-header h3 {
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
+        .results-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.75rem;
         }
 
         .consensus-badge {
             display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.9rem;
+            padding: 0.375rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
         .consensus-badge.agreed {
-            background: var(--green);
-            color: var(--light);
+            background: #D1FAE5;
+            color: #065F46;
         }
 
         .consensus-badge.partial {
-            background: var(--secondary);
-            color: var(--light);
+            background: #FEF3C7;
+            color: #92400E;
         }
 
         .consensus-badge.disagreed {
-            background: var(--purple);
-            color: var(--light);
+            background: #FEE2E2;
+            color: #991B1B;
         }
 
-        .results-stats {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .stat-box {
-            background: var(--surface);
+        .stat-card {
+            background: var(--gray-50);
             padding: 1rem;
-            border-radius: 12px;
+            border-radius: 8px;
             text-align: center;
-            border: 2px solid var(--surface-light);
         }
 
         .stat-label {
-            font-size: 0.8rem;
-            color: var(--gray);
+            font-size: 0.75rem;
+            color: var(--gray-500);
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            color: var(--accent);
-            font-family: 'Space Mono', monospace;
+            color: var(--gray-900);
         }
 
         .vote-distribution {
@@ -542,100 +488,203 @@
             flex-wrap: wrap;
         }
 
-        .vote-bar {
-            background: var(--surface);
-            padding: 0.75rem 1rem;
+        .vote-chip {
+            background: var(--gray-100);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .vote-chip .value {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Participants Panel */
+        .participants-panel {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .participants-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .participants-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .participants-count {
+            background: var(--gray-100);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .participants-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .participant {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--gray-50);
             border-radius: 8px;
-            border: 2px solid var(--surface-light);
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
+            transition: all 0.2s ease;
         }
 
-        .vote-bar .value {
-            color: var(--accent);
-            font-size: 1.2rem;
+        .participant-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .vote-bar .count {
-            color: var(--gray);
-            font-size: 0.9rem;
+        .participant-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667EEA, #764BA2);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .participant.host .participant-avatar {
+            background: linear-gradient(135deg, var(--primary), #7C3AED);
+        }
+
+        .participant-details {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-weight: 500;
+            color: var(--gray-900);
+            font-size: 0.875rem;
+        }
+
+        .host-label {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
             margin-left: 0.5rem;
         }
 
+        .participant-vote {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .participant-vote.voted {
+            color: var(--success);
+        }
+
+        .participant-vote.pending {
+            color: var(--gray-400);
+        }
+
+        .participant-vote.revealed {
+            color: var(--primary);
+        }
+
         /* Control Buttons */
-        .control-buttons {
+        .control-section {
             margin-top: 2rem;
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             justify-content: center;
         }
 
-        .btn-large {
-            padding: 1.25rem 2.5rem;
-            font-size: 1.1rem;
-        }
-
         .btn-reveal {
-            background: linear-gradient(135deg, var(--green), var(--blue));
-            color: var(--light);
-            box-shadow: 0 4px 20px rgba(46, 204, 113, 0.3);
+            background: var(--success);
+            color: var(--white);
         }
 
         .btn-reveal:hover {
-            box-shadow: 0 6px 30px rgba(46, 204, 113, 0.5);
+            background: #059669;
         }
 
         .btn-reset {
-            background: linear-gradient(135deg, var(--purple), var(--primary));
-            color: var(--light);
-            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+            background: var(--primary);
+            color: var(--white);
         }
 
         .btn-reset:hover {
-            box-shadow: 0 6px 30px rgba(155, 89, 182, 0.5);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
+            background: var(--primary-hover);
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .main-content {
+            .main-grid {
                 grid-template-columns: 1fr;
             }
 
-            .participants-panel {
-                max-height: none;
+            .navbar-info {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+            }
+
+            .share-section {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
 
         @media (max-width: 640px) {
+            .join-container {
+                padding: 2rem;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
             .container {
                 padding: 1rem;
             }
 
-            .logo h1 {
-                font-size: 2rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .cards-container {
-                gap: 0.5rem;
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.75rem;
             }
 
             .card {
-                width: 60px;
-                height: 85px;
-                font-size: 1.5rem;
+                font-size: 1.25rem;
             }
 
-            .results-stats {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -644,120 +693,152 @@
             display: none !important;
         }
 
-        /* Firebase Setup Notice */
-        .setup-notice {
-            background: var(--secondary);
-            color: var(--dark);
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            text-align: center;
-            font-weight: 600;
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--gray-900);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-success {
+            background: var(--success);
         }
     </style>
 </head>
 <body>
     <!-- Join Screen -->
     <div class="join-screen" id="joinScreen">
-        <div class="join-box">
-            <div class="logo">
-                <h1>⚡ Poker Planning</h1>
-                <p>Story Points • Team Estimation</p>
-            </div>
-
-            <div id="setupNotice" class="setup-notice hidden">
-                ⚠️ Firebase not configured. Using demo mode (single session only).
+        <div class="join-container">
+            <div class="brand">
+                <div class="brand-icon">📊</div>
+                <h1>Planning Poker</h1>
+                <p>Collaborative Team Estimation</p>
             </div>
             
-            <div class="input-group">
-                <label for="userName">Your Name</label>
-                <input type="text" id="userName" placeholder="Enter your name" autocomplete="off">
+            <div class="form-group">
+                <label class="form-label" for="userName">Your Name</label>
+                <input type="text" id="userName" class="form-input" placeholder="Enter your name" autocomplete="off">
             </div>
             
-            <div class="input-group" id="roomCodeGroup" style="display: none;">
-                <label for="roomCode">Room Code</label>
-                <input type="text" id="roomCode" placeholder="Enter room code" autocomplete="off">
+            <div class="form-group hidden" id="roomCodeGroup">
+                <label class="form-label" for="roomCode">Room Code</label>
+                <input type="text" id="roomCode" class="form-input" placeholder="Enter room code" autocomplete="off">
             </div>
             
             <div class="button-group" id="initialButtons">
-                <button class="btn btn-secondary" id="createRoomBtn">Create New Room</button>
-                <button class="btn btn-primary" id="showJoinBtn">Join Existing Room</button>
+                <button class="btn btn-secondary" id="createRoomBtn">Create Room</button>
+                <button class="btn btn-primary" id="showJoinBtn">Join Room</button>
             </div>
             
-            <div class="button-group" id="joinButtons" style="display: none;">
+            <div class="button-group hidden" id="joinButtons">
                 <button class="btn btn-secondary" id="backBtn">← Back</button>
-                <button class="btn btn-primary" id="joinBtn">Join Room</button>
+                <button class="btn btn-primary" id="joinBtn">Join</button>
             </div>
         </div>
     </div>
 
     <!-- Game Screen -->
-    <div class="game-screen container" id="gameScreen">
-        <div class="header">
-            <div class="header-left">
-                <h2>⚡ Poker Planning</h2>
-                <div class="room-code">Room Code: <strong id="displayRoomCode"></strong></div>
-            </div>
-            <div class="header-right">
-                <div class="user-badge">
-                    <span>👤</span>
-                    <span id="displayUserName"></span>
+    <div class="game-screen" id="gameScreen">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <div class="navbar-icon">📊</div>
+                    <span class="navbar-title">Planning Poker</span>
                 </div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <!-- Voting Area -->
-            <div class="voting-area">
-                <div class="voting-header">
-                    <h3>Select Your Estimate</h3>
-                    <div class="voting-status" id="votingStatus">Choose a card to vote</div>
-                </div>
-
-                <div class="cards-container" id="cardsContainer">
-                    <!-- Cards will be generated dynamically -->
-                </div>
-
-                <div id="resultsSection" class="results-section hidden">
-                    <div class="results-header">
-                        <h3>📊 Voting Results</h3>
-                        <span class="consensus-badge" id="consensusBadge">Agreed</span>
+                <div class="navbar-info">
+                    <div class="share-section" id="shareSection">
+                        <div class="share-link-container">
+                            <span class="share-link-text" id="shareLink">...</span>
+                        </div>
+                        <button class="copy-btn" id="copyLinkBtn">Copy Link</button>
                     </div>
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <span class="user-name" id="displayUserName">User</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-                    <div class="results-stats">
-                        <div class="stat-box">
-                            <div class="stat-label">Average</div>
-                            <div class="stat-value" id="averageValue">0</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Minimum</div>
-                            <div class="stat-value" id="minValue">0</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Maximum</div>
-                            <div class="stat-value" id="maxValue">0</div>
+        <div class="container">
+            <div class="main-grid">
+                <!-- Voting Area -->
+                <div class="voting-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Cast Your Vote</h2>
+                        <p class="panel-subtitle">Select a card to estimate the story complexity</p>
+                        <div class="vote-status">
+                            <span class="status-indicator" id="statusIndicator"></span>
+                            <span class="vote-status-text" id="votingStatus">Waiting for votes...</span>
                         </div>
                     </div>
 
-                    <div class="vote-distribution" id="voteDistribution"></div>
+                    <div class="cards-grid" id="cardsContainer">
+                        <!-- Cards generated dynamically -->
+                    </div>
+
+                    <div id="resultsSection" class="results-section hidden">
+                        <div class="results-header">
+                            <h3 class="results-title">Voting Results</h3>
+                            <span class="consensus-badge" id="consensusBadge">Agreed</span>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-label">Average</div>
+                                <div class="stat-value" id="averageValue">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Minimum</div>
+                                <div class="stat-value" id="minValue">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Maximum</div>
+                                <div class="stat-value" id="maxValue">0</div>
+                            </div>
+                        </div>
+
+                        <div class="vote-distribution" id="voteDistribution"></div>
+                    </div>
+
+                    <div class="control-section">
+                        <button class="btn btn-reveal hidden" id="revealBtn">Reveal Votes</button>
+                        <button class="btn btn-reset hidden" id="resetBtn">New Round</button>
+                    </div>
                 </div>
 
-                <div class="control-buttons">
-                    <button class="btn btn-large btn-reveal hidden" id="revealBtn">🎲 Reveal Votes</button>
-                    <button class="btn btn-large btn-reset hidden" id="resetBtn">🔄 New Round</button>
+                <!-- Participants Panel -->
+                <div class="participants-panel">
+                    <div class="participants-header">
+                        <h3 class="participants-title">Participants</h3>
+                        <span class="participants-count" id="participantCount">0</span>
+                    </div>
+                    <div class="participants-list" id="participantList"></div>
                 </div>
-            </div>
-
-            <!-- Participants Panel -->
-            <div class="participants-panel">
-                <h3>
-                    👥 Participants
-                    <span class="participant-count" id="participantCount">0</span>
-                </h3>
-                <div class="participant-list" id="participantList"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage">Link copied!</span>
     </div>
 
     <!-- Firebase SDK -->
@@ -774,21 +855,17 @@
             measurementId: "G-2F154GC59N"
         };
 
-        // Check if Firebase is configured
         const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
 
         let db = null;
 
-        // Only initialize Firebase if configured
+        // Initialize Firebase
         if (isFirebaseConfigured) {
-            // Import Firebase modules
             import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js').then(({ initializeApp }) => {
                 return import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js').then(({ getDatabase, ref, set, get, onValue, update, remove }) => {
-                    // Initialize Firebase
                     const app = initializeApp(firebaseConfig);
                     db = getDatabase(app);
                     
-                    // Expose database functions globally
                     window.firebaseDB = {
                         ref,
                         set,
@@ -799,18 +876,23 @@
                         database: db
                     };
                     
-                    console.log('✓ Firebase initialized successfully');
+                    console.log('✓ Firebase initialized');
+                    
+                    // Check for room code in URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const roomCode = urlParams.get('room');
+                    if (roomCode) {
+                        document.getElementById('roomCode').value = roomCode;
+                        document.getElementById('showJoinBtn').click();
+                    }
                 });
             }).catch(error => {
                 console.error('Failed to initialize Firebase:', error);
-                document.getElementById('setupNotice').classList.remove('hidden');
+                alert('Firebase initialization failed. Please check your configuration.');
             });
-        } else {
-            console.warn('Firebase not configured - using demo mode');
-            document.getElementById('setupNotice').classList.remove('hidden');
         }
 
-        // State management
+        // State
         const FIBONACCI = [1, 2, 3, 5, 8, 13, 21];
         
         let state = {
@@ -824,15 +906,53 @@
 
         let roomListener = null;
 
-        // Generate random room code
+        // Utilities
         function generateRoomCode() {
             return Math.random().toString(36).substring(2, 8).toUpperCase();
         }
 
-        // Generate unique session ID
         function generateSessionId() {
             return Date.now() + '-' + Math.random().toString(36).substring(2, 9);
         }
+
+        function getRoomLink(roomCode) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            return `${baseUrl}?room=${roomCode}`;
+        }
+
+        function showToast(message, type = 'default') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = 'toast show';
+            if (type === 'success') {
+                toast.classList.add('toast-success');
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Copy link functionality
+        document.getElementById('copyLinkBtn').addEventListener('click', async () => {
+            const link = document.getElementById('shareLink').textContent;
+            try {
+                await navigator.clipboard.writeText(link);
+                const btn = document.getElementById('copyLinkBtn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                showToast('Link copied to clipboard!', 'success');
+                
+                setTimeout(() => {
+                    btn.textContent = 'Copy Link';
+                    btn.classList.remove('copied');
+                }, 2000);
+            } catch (error) {
+                showToast('Failed to copy link');
+            }
+        });
 
         // Initialize cards
         function initializeCards() {
@@ -854,14 +974,12 @@
         async function handleVote(value) {
             if (state.votesRevealed) return;
             
-            // Update UI immediately
             document.querySelectorAll('.card').forEach(card => {
                 card.classList.toggle('selected', card.dataset.value == value);
             });
             
             state.selectedVote = value;
             
-            // Update Firebase
             if (window.firebaseDB && state.roomCode && state.sessionId) {
                 const { ref, update, database } = window.firebaseDB;
                 const participantRef = ref(database, `rooms/${state.roomCode}/participants/${state.sessionId}`);
@@ -904,7 +1022,6 @@
                     if (snapshot.exists()) {
                         const room = snapshot.val();
                         
-                        // Reset all participants' votes
                         const updates = {
                             votesRevealed: false
                         };
@@ -918,7 +1035,6 @@
                         
                         await update(roomRef, updates);
                         
-                        // Clear UI
                         state.selectedVote = null;
                         document.querySelectorAll('.card').forEach(card => {
                             card.classList.remove('selected');
@@ -941,7 +1057,7 @@
                     average: 0,
                     min: 0,
                     max: 0,
-                    consensus: 'No votes yet',
+                    consensus: 'disagreed',
                     distribution: {}
                 };
             }
@@ -967,7 +1083,7 @@
             return { average, min, max, consensus, distribution };
         }
 
-        // Update UI from Firebase data
+        // Update UI
         function updateUIFromRoom(room) {
             if (!room) return;
             
@@ -987,20 +1103,20 @@
                 
                 let voteDisplay;
                 if (room.votesRevealed && participant.hasVoted) {
-                    voteDisplay = `<span class="vote-status revealed">${participant.vote}</span>`;
+                    voteDisplay = `<span class="participant-vote revealed">${participant.vote}</span>`;
                 } else if (participant.hasVoted) {
-                    voteDisplay = '<span class="vote-status voted">✓</span>';
+                    voteDisplay = '<span class="participant-vote voted">✓</span>';
                 } else {
-                    voteDisplay = '<span class="vote-status pending">—</span>';
+                    voteDisplay = '<span class="participant-vote pending">—</span>';
                 }
                 
                 div.innerHTML = `
                     <div class="participant-info">
                         <div class="participant-avatar">${avatar}</div>
-                        <div>
+                        <div class="participant-details">
                             <div class="participant-name">
                                 ${participant.name}
-                                ${participant.isHost ? '<span class="host-badge">Host</span>' : ''}
+                                ${participant.isHost ? '<span class="host-label">Host</span>' : ''}
                             </div>
                         </div>
                     </div>
@@ -1013,8 +1129,16 @@
             // Update voting status
             const votedCount = Object.values(participants).filter(p => p.hasVoted).length;
             const totalCount = Object.keys(participants).length;
-            document.getElementById('votingStatus').textContent = 
-                `${votedCount} of ${totalCount} voted`;
+            const statusIndicator = document.getElementById('statusIndicator');
+            const votingStatus = document.getElementById('votingStatus');
+            
+            votingStatus.textContent = `${votedCount} of ${totalCount} voted`;
+            
+            if (votedCount === totalCount && totalCount > 0) {
+                statusIndicator.classList.add('active');
+            } else {
+                statusIndicator.classList.remove('active');
+            }
             
             // Update selected card
             if (state.sessionId && participants[state.sessionId]) {
@@ -1031,10 +1155,9 @@
                 }
             }
             
-            // Update state
             state.votesRevealed = room.votesRevealed || false;
             
-            // Show/hide control buttons
+            // Control buttons
             const revealBtn = document.getElementById('revealBtn');
             const resetBtn = document.getElementById('resetBtn');
             const resultsSection = document.getElementById('resultsSection');
@@ -1052,7 +1175,7 @@
                 }
             }
             
-            // Show results if revealed
+            // Results
             if (room.votesRevealed) {
                 resultsSection.classList.remove('hidden');
                 const results = calculateResults(participants);
@@ -1064,8 +1187,8 @@
                 const consensusBadge = document.getElementById('consensusBadge');
                 consensusBadge.className = `consensus-badge ${results.consensus}`;
                 consensusBadge.textContent = 
-                    results.consensus === 'agreed' ? 'Full Agreement' :
-                    results.consensus === 'partial' ? 'Partial Agreement' :
+                    results.consensus === 'agreed' ? 'Full Consensus' :
+                    results.consensus === 'partial' ? 'Partial Consensus' :
                     'Divergent Estimates';
                 
                 const distDiv = document.getElementById('voteDistribution');
@@ -1073,13 +1196,10 @@
                 Object.entries(results.distribution)
                     .sort((a, b) => Number(a[0]) - Number(b[0]))
                     .forEach(([value, count]) => {
-                        const bar = document.createElement('div');
-                        bar.className = 'vote-bar';
-                        bar.innerHTML = `
-                            <span class="value">${value}</span>
-                            <span class="count">×${count}</span>
-                        `;
-                        distDiv.appendChild(bar);
+                        const chip = document.createElement('div');
+                        chip.className = 'vote-chip';
+                        chip.innerHTML = `<span class="value">${value}</span> × ${count}`;
+                        distDiv.appendChild(chip);
                     });
             } else {
                 resultsSection.classList.add('hidden');
@@ -1098,11 +1218,11 @@
                 }
 
                 if (!window.firebaseDB) {
-                    alert('Firebase is not configured. Please add your Firebase config to use this app.');
+                    alert('Firebase is not configured. Please add your Firebase config.');
                     return;
                 }
                 
-                const { ref, get, set, update, onValue, database } = window.firebaseDB;
+                const { ref, get, set, onValue, database } = window.firebaseDB;
                 
                 let roomCode;
                 let isHost = false;
@@ -1140,11 +1260,10 @@
                     const snapshot = await get(roomRef);
                     
                     if (!snapshot.exists()) {
-                        alert('Room code "' + roomCode + '" not found. Please check the code and try again.');
+                        alert('Room "' + roomCode + '" not found. Please check the code.');
                         return;
                     }
                     
-                    const room = snapshot.val();
                     const participantRef = ref(database, `rooms/${roomCode}/participants/${state.sessionId}`);
                     
                     await set(participantRef, {
@@ -1161,9 +1280,15 @@
                 state.roomCode = roomCode;
                 state.isHost = isHost;
                 
+                // Update UI
                 document.getElementById('displayUserName').textContent = userName;
-                document.getElementById('displayRoomCode').textContent = roomCode;
+                document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
                 
+                // Set shareable link
+                const roomLink = getRoomLink(roomCode);
+                document.getElementById('shareLink').textContent = roomLink;
+                
+                // Show game screen
                 document.getElementById('joinScreen').classList.add('hidden');
                 document.getElementById('gameScreen').style.display = 'block';
                 
@@ -1178,14 +1303,18 @@
                     }
                 });
                 
-                console.log('✓ Successfully joined room:', roomCode);
+                console.log('✓ Joined room:', roomCode);
+                
+                if (isHost) {
+                    showToast('Room created! Share the link above with your team.', 'success');
+                }
             } catch (error) {
-                console.error('Error in joinSession:', error);
+                console.error('Error:', error);
                 alert('An error occurred: ' + error.message);
             }
         }
 
-        // Show join room form
+        // UI Controls
         function showJoinForm() {
             const userName = document.getElementById('userName').value.trim();
             if (!userName) {
@@ -1193,44 +1322,46 @@
                 return;
             }
             
-            document.getElementById('roomCodeGroup').style.display = 'block';
-            document.getElementById('initialButtons').style.display = 'none';
-            document.getElementById('joinButtons').style.display = 'flex';
+            document.getElementById('roomCodeGroup').classList.remove('hidden');
+            document.getElementById('initialButtons').classList.add('hidden');
+            document.getElementById('joinButtons').classList.remove('hidden');
             document.getElementById('roomCode').focus();
         }
 
-        // Go back to initial form
         function goBack() {
-            document.getElementById('roomCodeGroup').style.display = 'none';
-            document.getElementById('initialButtons').style.display = 'flex';
-            document.getElementById('joinButtons').style.display = 'none';
+            document.getElementById('roomCodeGroup').classList.add('hidden');
+            document.getElementById('initialButtons').classList.remove('hidden');
+            document.getElementById('joinButtons').classList.add('hidden');
             document.getElementById('roomCode').value = '';
         }
 
-        // Create new room
-        function createNewRoom() {
+        // Event listeners
+        document.getElementById('createRoomBtn').addEventListener('click', () => {
             const userName = document.getElementById('userName').value.trim();
             if (!userName) {
                 alert('Please enter your name first');
                 return;
             }
             joinSession(true);
-        }
-
-        // Event listeners
-        document.getElementById('createRoomBtn').addEventListener('click', createNewRoom);
+        });
+        
         document.getElementById('showJoinBtn').addEventListener('click', showJoinForm);
         document.getElementById('backBtn').addEventListener('click', goBack);
         document.getElementById('joinBtn').addEventListener('click', () => joinSession(false));
         
         document.getElementById('userName').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                createNewRoom();
+                const userName = document.getElementById('userName').value.trim();
+                if (userName) {
+                    joinSession(true);
+                }
             }
         });
+        
         document.getElementById('roomCode').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') joinSession(false);
         });
+        
         document.getElementById('revealBtn').addEventListener('click', revealVotes);
         document.getElementById('resetBtn').addEventListener('click', resetRound);
         
