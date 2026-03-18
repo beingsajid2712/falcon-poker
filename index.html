@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Planning ⚡ Story Points</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7931E;
+            --accent: #FFC914;
+            --purple: #9B59B6;
+            --blue: #3498DB;
+            --green: #2ECC71;
+            --dark: #1A1A2E;
+            --darker: #0F0F1E;
+            --light: #FFFFFF;
+            --gray: #95A5A6;
+            --surface: #16213E;
+            --surface-light: #1F2D50;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(52, 152, 219, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Join Screen */
+        .join-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .join-box {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--surface-light);
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo p {
+            color: var(--gray);
+            font-size: 1rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 2px solid var(--surface-light);
+            background: var(--darker);
+            color: var(--light);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface-light);
+            color: var(--light);
+            border: 2px solid var(--surface-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface);
+            border-color: var(--primary);
+        }
+
+        /* Game Screen */
+        .game-screen {
+            display: none;
+        }
+
+        .header {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--surface-light);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .room-code {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .room-code strong {
+            color: var(--accent);
+            background: var(--darker);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            margin-left: 0.5rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-badge {
+            background: var(--darker);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 2px solid var(--surface-light);
+        }
+
+        .user-badge span {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+        }
+
+        /* Voting Area */
+        .voting-area {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid var(--surface-light);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .voting-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .voting-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .voting-status {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            width: 80px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--surface-light), var(--surface));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid var(--surface-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) rotate(2deg);
+            border-color: var(--primary);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card.selected {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--accent);
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+        }
+
+        .card.selected::before {
+            opacity: 0;
+        }
+
+        /* Participants Sidebar */
+        .participants-panel {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 2px solid var(--surface-light);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .participants-panel h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .participant-count {
+            background: var(--darker);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .participant-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .participant {
+            background: var(--darker);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--surface-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .participant-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .participant-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .participant.host .participant-avatar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .participant-name {
+            font-weight: 600;
+        }
+
+        .host-badge {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.5rem;
+        }
+
+        .vote-status {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .vote-status.voted {
+            color: var(--green);
+        }
+
+        .vote-status.pending {
+            color: var(--gray);
+        }
+
+        .vote-status.revealed {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        /* Results */
+        .results-section {
+            background: var(--darker);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 2px solid var(--surface-light);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h3 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .consensus-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .consensus-badge.agreed {
+            background: var(--green);
+            color: var(--light);
+        }
+
+        .consensus-badge.partial {
+            background: var(--secondary);
+            color: var(--light);
+        }
+
+        .consensus-badge.disagreed {
+            background: var(--purple);
+            color: var(--light);
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--surface-light);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .vote-distribution {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .vote-bar {
+            background: var(--surface);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--surface-light);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+        }
+
+        .vote-bar .value {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .vote-bar .count {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Control Buttons */
+        .control-buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: 1.25rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-reveal {
+            background: linear-gradient(135deg, var(--green), var(--blue));
+            color: var(--light);
+            box-shadow: 0 4px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-reveal:hover {
+            box-shadow: 0 6px 30px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, var(--purple), var(--primary));
+            color: var(--light);
+            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+        }
+
+        .btn-reset:hover {
+            box-shadow: 0 6px 30px rgba(155, 89, 182, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .participants-panel {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .cards-container {
+                gap: 0.5rem;
+            }
+
+            .card {
+                width: 60px;
+                height: 85px;
+                font-size: 1.5rem;
+            }
+
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Firebase Setup Notice */
+        .setup-notice {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Join Screen -->
+    <div class="join-screen" id="joinScreen">
+        <div class="join-box">
+            <div class="logo">
+                <h1>⚡ Poker Planning</h1>
+                <p>Story Points • Team Estimation</p>
+            </div>
+
+            <div id="setupNotice" class="setup-notice hidden">
+                ⚠️ Firebase not configured. Using demo mode (single session only).
+            </div>
+            
+            <div class="input-group">
+                <label for="userName">Your Name</label>
+                <input type="text" id="userName" placeholder="Enter your name" autocomplete="off">
+            </div>
+            
+            <div class="input-group" id="roomCodeGroup" style="display: none;">
+                <label for="roomCode">Room Code</label>
+                <input type="text" id="roomCode" placeholder="Enter room code" autocomplete="off">
+            </div>
+            
+            <div class="button-group" id="initialButtons">
+                <button class="btn btn-secondary" id="createRoomBtn">Create New Room</button>
+                <button class="btn btn-primary" id="showJoinBtn">Join Existing Room</button>
+            </div>
+            
+            <div class="button-group" id="joinButtons" style="display: none;">
+                <button class="btn btn-secondary" id="backBtn">← Back</button>
+                <button class="btn btn-primary" id="joinBtn">Join Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div class="game-screen container" id="gameScreen">
+        <div class="header">
+            <div class="header-left">
+                <h2>⚡ Poker Planning</h2>
+                <div class="room-code">Room Code: <strong id="displayRoomCode"></strong></div>
+            </div>
+            <div class="header-right">
+                <div class="user-badge">
+                    <span>👤</span>
+                    <span id="displayUserName"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Voting Area -->
+            <div class="voting-area">
+                <div class="voting-header">
+                    <h3>Select Your Estimate</h3>
+                    <div class="voting-status" id="votingStatus">Choose a card to vote</div>
+                </div>
+
+                <div class="cards-container" id="cardsContainer">
+                    <!-- Cards will be generated dynamically -->
+                </div>
+
+                <div id="resultsSection" class="results-section hidden">
+                    <div class="results-header">
+                        <h3>📊 Voting Results</h3>
+                        <span class="consensus-badge" id="consensusBadge">Agreed</span>
+                    </div>
+
+                    <div class="results-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Average</div>
+                            <div class="stat-value" id="averageValue">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Minimum</div>
+                            <div class="stat-value" id="minValue">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Maximum</div>
+                            <div class="stat-value" id="maxValue">0</div>
+                        </div>
+                    </div>
+
+                    <div class="vote-distribution" id="voteDistribution"></div>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="btn btn-large btn-reveal hidden" id="revealBtn">🎲 Reveal Votes</button>
+                    <button class="btn btn-large btn-reset hidden" id="resetBtn">🔄 New Round</button>
+                </div>
+            </div>
+
+            <!-- Participants Panel -->
+            <div class="participants-panel">
+                <h3>
+                    👥 Participants
+                    <span class="participant-count" id="participantCount">0</span>
+                </h3>
+                <div class="participant-list" id="participantList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDw80dPogQMmJTdMOK6seYBC6h-NoQPTZs",
+            authDomain: "falcon-poker.firebaseapp.com",
+            databaseURL: "https://falcon-poker-default-rtdb.firebaseio.com",
+            projectId: "falcon-poker",
+            storageBucket: "falcon-poker.firebasestorage.app",
+            messagingSenderId: "779391976518",
+            appId: "1:779391976518:web:358d3eaa73b768b224b647",
+            measurementId: "G-2F154GC59N"
+        };
+
+        // Check if Firebase is configured
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+        let db = null;
+
+        // Only initialize Firebase if configured
+        if (isFirebaseConfigured) {
+            // Import Firebase modules
+            import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js').then(({ initializeApp }) => {
+                return import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js').then(({ getDatabase, ref, set, get, onValue, update, remove }) => {
+                    // Initialize Firebase
+                    const app = initializeApp(firebaseConfig);
+                    db = getDatabase(app);
+                    
+                    // Expose database functions globally
+                    window.firebaseDB = {
+                        ref,
+                        set,
+                        get,
+                        onValue,
+                        update,
+                        remove,
+                        database: db
+                    };
+                    
+                    console.log('✓ Firebase initialized successfully');
+                });
+            }).catch(error => {
+                console.error('Failed to initialize Firebase:', error);
+                document.getElementById('setupNotice').classList.remove('hidden');
+            });
+        } else {
+            console.warn('Firebase not configured - using demo mode');
+            document.getElementById('setupNotice').classList.remove('hidden');
+        }
+
+        // State management
+        const FIBONACCI = [1, 2, 3, 5, 8, 13, 21];
+        
+        let state = {
+            currentUser: null,
+            roomCode: null,
+            isHost: false,
+            selectedVote: null,
+            votesRevealed: false,
+            sessionId: null
+        };
+
+        let roomListener = null;
+
+        // Generate random room code
+        function generateRoomCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        // Generate unique session ID
+        function generateSessionId() {
+            return Date.now() + '-' + Math.random().toString(36).substring(2, 9);
+        }
+
+        // Initialize cards
+        function initializeCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+            
+            FIBONACCI.forEach(value => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.textContent = value;
+                card.dataset.value = value;
+                
+                card.addEventListener('click', () => handleVote(value));
+                container.appendChild(card);
+            });
+        }
+
+        // Handle vote
+        async function handleVote(value) {
+            if (state.votesRevealed) return;
+            
+            // Update UI immediately
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.value == value);
+            });
+            
+            state.selectedVote = value;
+            
+            // Update Firebase
+            if (window.firebaseDB && state.roomCode && state.sessionId) {
+                const { ref, update, database } = window.firebaseDB;
+                const participantRef = ref(database, `rooms/${state.roomCode}/participants/${state.sessionId}`);
+                
+                try {
+                    await update(participantRef, {
+                        vote: value,
+                        hasVoted: true
+                    });
+                } catch (error) {
+                    console.error('Error updating vote:', error);
+                }
+            }
+        }
+
+        // Reveal votes
+        async function revealVotes() {
+            if (window.firebaseDB && state.roomCode) {
+                const { ref, update, database } = window.firebaseDB;
+                const roomRef = ref(database, `rooms/${state.roomCode}`);
+                
+                try {
+                    await update(roomRef, {
+                        votesRevealed: true
+                    });
+                } catch (error) {
+                    console.error('Error revealing votes:', error);
+                }
+            }
+        }
+
+        // Reset round
+        async function resetRound() {
+            if (window.firebaseDB && state.roomCode) {
+                const { ref, get, update, database } = window.firebaseDB;
+                const roomRef = ref(database, `rooms/${state.roomCode}`);
+                
+                try {
+                    const snapshot = await get(roomRef);
+                    if (snapshot.exists()) {
+                        const room = snapshot.val();
+                        
+                        // Reset all participants' votes
+                        const updates = {
+                            votesRevealed: false
+                        };
+                        
+                        if (room.participants) {
+                            Object.keys(room.participants).forEach(sessionId => {
+                                updates[`participants/${sessionId}/vote`] = null;
+                                updates[`participants/${sessionId}/hasVoted`] = false;
+                            });
+                        }
+                        
+                        await update(roomRef, updates);
+                        
+                        // Clear UI
+                        state.selectedVote = null;
+                        document.querySelectorAll('.card').forEach(card => {
+                            card.classList.remove('selected');
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error resetting round:', error);
+                }
+            }
+        }
+
+        // Calculate results
+        function calculateResults(participants) {
+            const votes = Object.values(participants || {})
+                .filter(p => p.hasVoted && p.vote !== null)
+                .map(p => p.vote);
+            
+            if (votes.length === 0) {
+                return {
+                    average: 0,
+                    min: 0,
+                    max: 0,
+                    consensus: 'No votes yet',
+                    distribution: {}
+                };
+            }
+            
+            const average = votes.reduce((a, b) => a + b, 0) / votes.length;
+            const min = Math.min(...votes);
+            const max = Math.max(...votes);
+            
+            let consensus;
+            if (min === max) {
+                consensus = 'agreed';
+            } else if (max - min <= 3) {
+                consensus = 'partial';
+            } else {
+                consensus = 'disagreed';
+            }
+            
+            const distribution = {};
+            votes.forEach(vote => {
+                distribution[vote] = (distribution[vote] || 0) + 1;
+            });
+            
+            return { average, min, max, consensus, distribution };
+        }
+
+        // Update UI from Firebase data
+        function updateUIFromRoom(room) {
+            if (!room) return;
+            
+            const participants = room.participants || {};
+            const participantList = document.getElementById('participantList');
+            const participantCount = document.getElementById('participantCount');
+            
+            participantCount.textContent = Object.keys(participants).length;
+            participantList.innerHTML = '';
+            
+            Object.entries(participants).forEach(([sessionId, participant]) => {
+                const div = document.createElement('div');
+                div.className = 'participant';
+                if (participant.isHost) div.classList.add('host');
+                
+                const avatar = participant.name.charAt(0).toUpperCase();
+                
+                let voteDisplay;
+                if (room.votesRevealed && participant.hasVoted) {
+                    voteDisplay = `<span class="vote-status revealed">${participant.vote}</span>`;
+                } else if (participant.hasVoted) {
+                    voteDisplay = '<span class="vote-status voted">✓</span>';
+                } else {
+                    voteDisplay = '<span class="vote-status pending">—</span>';
+                }
+                
+                div.innerHTML = `
+                    <div class="participant-info">
+                        <div class="participant-avatar">${avatar}</div>
+                        <div>
+                            <div class="participant-name">
+                                ${participant.name}
+                                ${participant.isHost ? '<span class="host-badge">Host</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    ${voteDisplay}
+                `;
+                
+                participantList.appendChild(div);
+            });
+            
+            // Update voting status
+            const votedCount = Object.values(participants).filter(p => p.hasVoted).length;
+            const totalCount = Object.keys(participants).length;
+            document.getElementById('votingStatus').textContent = 
+                `${votedCount} of ${totalCount} voted`;
+            
+            // Update selected card
+            if (state.sessionId && participants[state.sessionId]) {
+                const currentParticipant = participants[state.sessionId];
+                if (currentParticipant.hasVoted && !room.votesRevealed) {
+                    document.querySelectorAll('.card').forEach(card => {
+                        card.classList.toggle('selected', card.dataset.value == currentParticipant.vote);
+                    });
+                    state.selectedVote = currentParticipant.vote;
+                } else if (room.votesRevealed) {
+                    document.querySelectorAll('.card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                }
+            }
+            
+            // Update state
+            state.votesRevealed = room.votesRevealed || false;
+            
+            // Show/hide control buttons
+            const revealBtn = document.getElementById('revealBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultsSection = document.getElementById('resultsSection');
+            
+            if (state.isHost) {
+                if (!room.votesRevealed && votedCount > 0) {
+                    revealBtn.classList.remove('hidden');
+                    resetBtn.classList.add('hidden');
+                } else if (room.votesRevealed) {
+                    revealBtn.classList.add('hidden');
+                    resetBtn.classList.remove('hidden');
+                } else {
+                    revealBtn.classList.add('hidden');
+                    resetBtn.classList.add('hidden');
+                }
+            }
+            
+            // Show results if revealed
+            if (room.votesRevealed) {
+                resultsSection.classList.remove('hidden');
+                const results = calculateResults(participants);
+                
+                document.getElementById('averageValue').textContent = results.average.toFixed(1);
+                document.getElementById('minValue').textContent = results.min;
+                document.getElementById('maxValue').textContent = results.max;
+                
+                const consensusBadge = document.getElementById('consensusBadge');
+                consensusBadge.className = `consensus-badge ${results.consensus}`;
+                consensusBadge.textContent = 
+                    results.consensus === 'agreed' ? 'Full Agreement' :
+                    results.consensus === 'partial' ? 'Partial Agreement' :
+                    'Divergent Estimates';
+                
+                const distDiv = document.getElementById('voteDistribution');
+                distDiv.innerHTML = '';
+                Object.entries(results.distribution)
+                    .sort((a, b) => Number(a[0]) - Number(b[0]))
+                    .forEach(([value, count]) => {
+                        const bar = document.createElement('div');
+                        bar.className = 'vote-bar';
+                        bar.innerHTML = `
+                            <span class="value">${value}</span>
+                            <span class="count">×${count}</span>
+                        `;
+                        distDiv.appendChild(bar);
+                    });
+            } else {
+                resultsSection.classList.add('hidden');
+            }
+        }
+
+        // Join session
+        async function joinSession(createNew = false) {
+            try {
+                const userName = document.getElementById('userName').value.trim();
+                const roomCodeInput = document.getElementById('roomCode').value.trim().toUpperCase();
+                
+                if (!userName) {
+                    alert('Please enter your name');
+                    return;
+                }
+
+                if (!window.firebaseDB) {
+                    alert('Firebase is not configured. Please add your Firebase config to use this app.');
+                    return;
+                }
+                
+                const { ref, get, set, update, onValue, database } = window.firebaseDB;
+                
+                let roomCode;
+                let isHost = false;
+                
+                state.sessionId = generateSessionId();
+                
+                if (createNew) {
+                    roomCode = generateRoomCode();
+                    isHost = true;
+                    
+                    const roomRef = ref(database, `rooms/${roomCode}`);
+                    await set(roomRef, {
+                        code: roomCode,
+                        votesRevealed: false,
+                        createdAt: Date.now(),
+                        participants: {
+                            [state.sessionId]: {
+                                name: userName,
+                                sessionId: state.sessionId,
+                                isHost: true,
+                                vote: null,
+                                hasVoted: false,
+                                joinedAt: Date.now()
+                            }
+                        }
+                    });
+                } else {
+                    if (!roomCodeInput) {
+                        alert('Please enter a room code');
+                        return;
+                    }
+                    
+                    roomCode = roomCodeInput;
+                    const roomRef = ref(database, `rooms/${roomCode}`);
+                    const snapshot = await get(roomRef);
+                    
+                    if (!snapshot.exists()) {
+                        alert('Room code "' + roomCode + '" not found. Please check the code and try again.');
+                        return;
+                    }
+                    
+                    const room = snapshot.val();
+                    const participantRef = ref(database, `rooms/${roomCode}/participants/${state.sessionId}`);
+                    
+                    await set(participantRef, {
+                        name: userName,
+                        sessionId: state.sessionId,
+                        isHost: false,
+                        vote: null,
+                        hasVoted: false,
+                        joinedAt: Date.now()
+                    });
+                }
+                
+                state.currentUser = userName;
+                state.roomCode = roomCode;
+                state.isHost = isHost;
+                
+                document.getElementById('displayUserName').textContent = userName;
+                document.getElementById('displayRoomCode').textContent = roomCode;
+                
+                document.getElementById('joinScreen').classList.add('hidden');
+                document.getElementById('gameScreen').style.display = 'block';
+                
+                initializeCards();
+                
+                // Listen to room changes
+                const roomRef = ref(database, `rooms/${roomCode}`);
+                roomListener = onValue(roomRef, (snapshot) => {
+                    const room = snapshot.val();
+                    if (room) {
+                        updateUIFromRoom(room);
+                    }
+                });
+                
+                console.log('✓ Successfully joined room:', roomCode);
+            } catch (error) {
+                console.error('Error in joinSession:', error);
+                alert('An error occurred: ' + error.message);
+            }
+        }
+
+        // Show join room form
+        function showJoinForm() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) {
+                alert('Please enter your name first');
+                return;
+            }
+            
+            document.getElementById('roomCodeGroup').style.display = 'block';
+            document.getElementById('initialButtons').style.display = 'none';
+            document.getElementById('joinButtons').style.display = 'flex';
+            document.getElementById('roomCode').focus();
+        }
+
+        // Go back to initial form
+        function goBack() {
+            document.getElementById('roomCodeGroup').style.display = 'none';
+            document.getElementById('initialButtons').style.display = 'flex';
+            document.getElementById('joinButtons').style.display = 'none';
+            document.getElementById('roomCode').value = '';
+        }
+
+        // Create new room
+        function createNewRoom() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) {
+                alert('Please enter your name first');
+                return;
+            }
+            joinSession(true);
+        }
+
+        // Event listeners
+        document.getElementById('createRoomBtn').addEventListener('click', createNewRoom);
+        document.getElementById('showJoinBtn').addEventListener('click', showJoinForm);
+        document.getElementById('backBtn').addEventListener('click', goBack);
+        document.getElementById('joinBtn').addEventListener('click', () => joinSession(false));
+        
+        document.getElementById('userName').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                createNewRoom();
+            }
+        });
+        document.getElementById('roomCode').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') joinSession(false);
+        });
+        document.getElementById('revealBtn').addEventListener('click', revealVotes);
+        document.getElementById('resetBtn').addEventListener('click', resetRound);
+        
+        document.getElementById('userName').focus();
+    </script>
+</body>
+</html>
